@@ -15,7 +15,7 @@ selected_folder="" # Start off with empty string to get top level folder list
 
 while True:
     # Get list of folders in current selected_folder (if empty string, get's top level folders)
-    list_of_objects = s3_client.list_objects(Bucket=bucket_name, Prefix=selected_folder', Delimiter="/")
+    list_of_objects = s3_client.list_objects(Bucket=bucket_name, Prefix=selected_folder, Delimiter="/")
 
     # If there are no folders, exit the while loop
     if 'CommonPrefixes' not in list_of_objects:
