@@ -8,7 +8,7 @@ In the top of the [script](./main.py) you need to point it at the aws profile an
 
 ```python
 bucket_name = '<bucket name>'
-aws_profile = '<aaws profile name>'
+aws_profile = '<aws profile name>'
 ```
 
 ## Running The Code
