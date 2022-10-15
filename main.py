@@ -4,11 +4,7 @@ from simple_term_menu import TerminalMenu
 
 
 bucket_name = '<bucket name>'
-aws_profile = '<aaws profile name>'
-
-bucket_name = 'numerix-cloud'
-aws_profile = 'nxcoreprod'
-
+aws_profile = '<aws profile name>'
 
 
 # Create our boto3 session and client using the desired credentials
