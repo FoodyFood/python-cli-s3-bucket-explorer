@@ -1,3 +1,4 @@
+import os
 import boto3
 from simple_term_menu import TerminalMenu
 
@@ -34,7 +35,7 @@ while True:
     
     if "/" in selected_folder:
         folders.append("Back To Previous Folder")
-    folders.append("Exit Folder Selection")
+    folders.append("Exit Bucket Browser")
 
     # Display the menu to select the folder
     folder_menu = TerminalMenu(folders)
@@ -45,9 +46,9 @@ while True:
         selected_folder = ("/".join(selected_folder.split("/")[:-2]))
         if selected_folder != "":
                 selected_folder = selected_folder + "/"
-
+                
     # If the user wants to exit the downoad menu
-    elif folders[folder_menu_selection_index] == "Exit Folder Selection":
+    elif folders[folder_menu_selection_index] == "Exit Bucket Browser":
         exit()
 
     # Otherwise, we populate the selected_folder variable with the full key seleted
@@ -67,7 +68,7 @@ if selected_folder == "":
 
 # End of tree reached, ask the user if they would like to download the folder or browse and download single files
 print("No more folder levels, would you like to:\n")
-download_options=["Download The Complete Folder", "Download Single File From The Folder", "Exit Download Menu"]
+download_options=["Download Single File From The Folder", "Download The Complete Folder", "Exit Download Menu"]
 download_menu = TerminalMenu(download_options)
 download_menu_selection_index = download_menu.show()
 
@@ -97,9 +98,30 @@ if(download_options[download_menu_selection_index] == "Download Single File From
     # Download the selected file
     print("Downloading: " + selected_file)
     s3_client.download_file(bucket_name, selected_file, selected_file[len(selected_folder):])
+    print("")
 
 
 # If the user wants to download the whole folder, we just loop over the files one by one and download them
+if(download_options[download_menu_selection_index] == "Download The Complete Folder"):
+    print(f"Downloading {len(files_in_selected_folder['Contents'])} files..\n")
+    confirm_download_folder = input("Are you sure you want to download these files? (y/n) ")
+    if(confirm_download_folder == 'N' or confirm_download_folder == 'n'):
+        print("Download aborted, no files downloaded.\n")
+        exit()
 
+    elif (confirm_download_folder == 'Y' or confirm_download_folder == 'y'):
+        # Create a folder of the same name as the one we are downloading, in the current directory, if it doesnt exist
+        folder_to_download_into = selected_folder.split('/')[-2]
+        if not os.path.exists(folder_to_download_into):
+            os.mkdir(folder_to_download_into)
+
+        # Loop over al the files to download, and put them in the folder
+        for file in files_in_selected_folder['Contents']:
+            selected_file = file['Key']
+            print("Downloading: " + file['Key'][len(selected_folder):])
+            s3_client.download_file(bucket_name, selected_file, f"{folder_to_download_into}/" + selected_file[len(selected_folder):])
+
+    else:
+        print("y/n or Y/N only.")
 
 
