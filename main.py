@@ -2,8 +2,8 @@ import boto3
 from simple_term_menu import TerminalMenu
 
 
-bucket_name = 'bucket name'
-aws_profile = 'profile name'
+bucket_name = '<bucket name>'
+aws_profile = '<aaws profile name>'
 
 
 boto3_session = boto3.session.Session(profile_name=aws_profile)
@@ -46,10 +46,22 @@ if selected_folder == "":
 # End of tree reached, can ask user if they would like to download the folder or browse and download single files
 
 
-# Display the list of files in the folder the user selected
-objects_in_selected_folder = s3_client.list_objects_v2(Bucket = bucket_name, Prefix=selected_folder) 
-for object in objects_in_selected_folder['Contents']:
-    print(object['Key'])
+# Get the list of files in the folder the user selected
+files_in_selected_folder = s3_client.list_objects_v2(Bucket = bucket_name, Prefix=selected_folder) 
 
+# Remove the path prefix from each file
+files: list = []
+for file in files_in_selected_folder['Contents']:
+    files.append(file['Key'][len(selected_folder):])
+
+# Display the menu to select the folder
+file_menu = TerminalMenu(files)
+file_menu_selection_index = file_menu.show()
+
+selected_file=files_in_selected_folder['Contents'][file_menu_selection_index]['Key']
+
+print(selected_file)
+
+s3_client.download_file(bucket_name, selected_file, selected_file[len(selected_folder):])
 
 
