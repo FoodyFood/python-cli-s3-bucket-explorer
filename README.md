@@ -30,7 +30,7 @@ The files will be downloaded into a folder of the same name as the last one sele
 
 ## Configuration
 
-In the top of the [script](./main.py) you need to point it at the aws profile and bucket you want to explore.
+In the top of [main.py](./main.py) you need to point it at the aws profile and bucket you want to explore.
 
 ```python
 bucket_name = '<bucket name>'
@@ -40,8 +40,14 @@ aws_profile = '<aws profile name>'
 
 ## Running The Code
 
+Linux
 ```bash
 python3 ./main.py
+```
+
+Windows
+```bash
+python ./main.py
 ```
 
 ## Ideas For Improvements
@@ -50,7 +56,7 @@ For my purposes this was all I needed.
 
 But if you wanted to improve it;
 
-You could add another menu at the start that let's the user select the bucket to access. Then you could browse any bucket in an acccount.
+You could add another menu at the start that let's the user select the bucket to access. Then you could browse any bucket in the acccount.
 
 You could add the ability to upload files to the S3.
 
