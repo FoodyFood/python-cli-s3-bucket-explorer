@@ -120,8 +120,9 @@ if(download_options[download_menu_selection_index] == "Download The Complete Fol
             selected_file = file['Key']
             print("Downloading: " + file['Key'][len(selected_folder):])
             s3_client.download_file(bucket_name, selected_file, f"{folder_to_download_into}/" + selected_file[len(selected_folder):])
+            print("")
 
     else:
-        print("y/n or Y/N only.")
+        print("y/n or Y/N only.\n")
 
 
